@@ -1,100 +1,113 @@
 import openpyxl as xl
-from openpyxl.styles import Font, Fill, Alignment
+from openpyxl.styles import Font, Alignment
 import datetime
 import os
-import getpass
+
 
 path = "C:/Users/Pruebas/Desktop/REPORTES/"
 
 name = datetime.datetime.today().strftime("%d-%m-%Y")+".xlsx"
+date = datetime.datetime.today().strftime("%d-%m-%Y")
 
 def createNewWorkbook():
     os.system("taskkill /im EXCEL.EXE -f")
     global name
     wb = xl.Workbook()
     ws = wb.active
-    ws.title = "ATS1 REPORT"
-    ws.column_dimensions["A"].width=30
-    ws.column_dimensions["G"].width = 20
-    ws.column_dimensions["C"].width = 15
+    ws.title = "Data Base"
+
+    #DATA BASE SHEET CELL CONFIGURATION
+    reportWs = wb.create_sheet("Resume")
+    ws.column_dimensions["A"].width=15
+    ws.column_dimensions["B"].width = 20
+    ws.column_dimensions["C"].width = 20
+    ws.column_dimensions["D"].width = 10
+    ws.column_dimensions["E"].width = 15
+
+    #REPORT SHEET CELL CONFIGURATION
+    reportWs.column_dimensions["A"].width = 25
+    reportWs.merge_cells("A1:B1")
+    reportWs["A1"] = "Daily Resume"
+    reportWs["A1"].alignment = Alignment(horizontal="center")
+    reportWs["A1"].font = Font(bold=True, size=14)
 
     #MAIN TITLE
-    ws.merge_cells("A1:D1")
-    ws.merge_cells("G1:H1")
-    ws.merge_cells("K1:L1")
-    ws["A1"] = "REPORTE DIARIO - CONTENCIÓN DE ATS1"
+    ws.merge_cells("A1:F1")
+    ws["A1"] = "DAILY REPORT - ATS1 CHECKER             DATE: "+date
     ws["A1"].font = Font(bold=True, size=12)
     ws["A1"].alignment = Alignment(horizontal="center")
 
-    #SERIAL COLUMN
-    ws["A4"] = "SERIAL"
+    #TIME COLUMN
+    ws["A4"] = "TIME"
     ws["A4"].font = Font(bold=True)
 
-    #STATUS COLUMN
-    ws["B4"] = "STATUS"
+    #MODEL COLUMN
+    ws["B4"] = "MODEL"
     ws["B4"].font = Font(bold=True)
 
-    #INFO COLUMN
-    ws["C4"] = "INFO"
+    #SERIAL COLUMN
+    ws["C4"] = "SERIAL"
     ws["C4"].font = Font(bold=True)
 
-    # INFO COLUMN
-    ws["D4"] = "2ND TIME"
+    #STATUS COLUMN
+    ws["D4"] = "STATUS"
     ws["D4"].font = Font(bold=True)
 
-    #SUB RESULT
-    ws["G1"] = "SUB RESULT"
-    ws["G1"].font = Font(bold=True)
-    ws["G1"].alignment = Alignment(horizontal="center")
+    #INFO COLUMN
+    ws["E4"] = "INFO"
+    ws["E4"].font = Font(bold=True)
 
-    #RESULT
-    ws["k1"] = "RESULT"
-    ws["k1"].font = Font(bold=True)
-    ws["k1"].alignment = Alignment(horizontal="center")
+    # 2ND TIME COLUMN
+    ws["F4"] = "2ND TIME"
+    ws["F4"].font = Font(bold=True)
 
-    # TOTAL PASSED ROW
-    ws["G2"] = "PASSED:"
-    ws["G2"].font = Font(bold=True,color='259e15')
+    # PASSED 1ST ATTEMPT
+    reportWs["A3"] = "PASSED AT 1° ATTEMPT:"
+    reportWs["A3"].font = Font(bold=True)
 
-    #TOTAL PASSED RESULT
-    ws["H2"] = '=COUNTIF(B:B,"PASSED")'
+    #PASSED 1ST ATTEMPT RESULT
+    reportWs["B3"] = '=COUNTIF(\'Data Base\'!D:D,"PASSED")'
+    reportWs["B3"].font = Font(bold=True, color='259e15')
 
-    # TOTAL FAILED ROW
-    ws["G3"] = "FAILED:"
-    ws["G3"].font = Font(bold=True,color='cf1729')
+    # FAILED 1ST ATTEMPT
+    reportWs["A4"] = "FAILED AT 1° ATTEMPT:"
+    reportWs["A4"].font = Font(bold=True)
 
-    #TOTAL FAILED RESULT
-    ws["H3"] = '=COUNTIF(B:B,"FAILED")'
+    #FAILED 1ST ATTEMPT RESULT
+    reportWs["B4"] = '=COUNTIF(\'Data Base\'!D:D,"FAILED")'
+    reportWs["B4"].font = Font(bold=True, color='cf1729')
 
-    #2ND TRY PASSED ROW
-    ws["G4"] = "PASSED in 2nd Try:"
-    ws.column_dimensions["K"].width=20
-    ws["G4"].font = Font(bold=True,color='259e15')
+    #PASSED 2ND ATTEMPT
+    reportWs["A6"] = "PASSED IN 2° ATTEMPT:"
+    reportWs["A6"].font = Font(bold=True)
 
-    #TOTAL FAILED 2ND TRY PASSED
-    ws["H4"] = '=COUNTIF(D:D,"PASSED")'
+    #PASSED 2ND ATTEMPT RESULT
+    reportWs["B6"] = '=COUNTIF(\'Data Base\'!F:F,"PASSED")'
+    reportWs["B6"].font = Font(bold=True, color='259e15')
 
-    # TOTAL PASSED UNITS
-    ws["K2"] = "TOTAL PASSED UNITS:"
-    ws.column_dimensions["K"].width = 25
-    ws["K2"].font = Font(bold=True, color='259e15')
+    # TOTAL PASSED
+    reportWs["A8"] = "TOTAL PASSED UNITS:"
+    reportWs["A8"].font = Font(bold=True)
 
     # TOTAL PASSED RESULT
-    ws["L2"] = '=H2+H4'
+    reportWs["B8"] = '=B3+B6'
+    reportWs["B8"].font = Font(bold=True, color='259e15')
 
-    #TOTAL FAILED UNITS
-    ws["K3"] = "TOTAL FAILED UNITS:"
-    ws["K3"].font = Font(bold=True,color='cf1729')
+    #TOTAL FAILED
+    reportWs["A9"] = "TOTAL FAILED UNITS:"
+    reportWs["A9"].font = Font(bold=True)
 
     # TOTAL FAILED RESULT
-    ws["L3"] = '=H3-H4'
+    reportWs["B9"] = '=B4-B6'
+    reportWs["B9"].font = Font(bold=True, color='cf1729')
 
-    #TOTAL UNITS OF THE DAY
-    ws["K4"] = "TOTAL UNITS PROCESSED:"
-    ws["K4"].font = Font(bold=True,color='1410fe')
+    #TOTAL UNITS PROCESSED
+    reportWs["A11"] = "TOTAL UNITS PROCESSED:"
+    reportWs["A11"].font = Font(bold=True,color='1410fe')
 
-    # TOTAL UNITS OF THE DAY RESULT
-    ws["L4"] = '=H2+H3'
+    # TOTAL UNITS PROCESSED RESULT
+    reportWs["B11"] = '=B8+B9'
+    reportWs["B11"].font = Font(bold=True)
 
 
 
@@ -111,8 +124,10 @@ def isFileExisting():
     global path
     return os.path.isfile(path+name)
 
-def writeToWorkbook(serial, status):
+def writeToWorkbook(model, serial, status):
     os.system("taskkill /im EXCEL.EXE -f")
+
+    ## DEFINE STATUS LABEL
     if status == 1:
         statusLabel = "PASSED"
         font = "Font(color='259e15')"
@@ -127,7 +142,8 @@ def writeToWorkbook(serial, status):
         infoLabel = "FAILED IN ATS1"
     else:
         infoLabel = "NO ATS1"
-
+    ##############################################
+    #CHECK IF REPORT EXISTS OR CREATE NEW ONE
     global name
     if isFileExisting():
         wb = xl.load_workbook(path+name)
@@ -136,15 +152,27 @@ def writeToWorkbook(serial, status):
 
     wb = xl.load_workbook(path+name)
     ws = wb.active
+
+    #SEARCH FOR EXISTING SERIALS
     searchResult = isSerialFound(serial, ws)
+
+    #IF SERIAL NOT FOUND, WRITE IT TO BOOK
     if searchResult == -1:
+        currentTime = datetime.datetime.now().strftime("%H:%M:%Shrs")
         print("Serial Guardado")
-        serialRow = "A" + str(ws.max_row + 1)
+        print(currentTime)
+        timeRow = "A" + str(ws.max_row + 1)
+        print(timeRow)
+        modelRow = "B" + str(ws.max_row + 1)
+        print(modelRow)
+        serialRow = "C" + str(ws.max_row + 1)
         print(serialRow)
-        statusRow = "B" + str(ws.max_row + 1)
+        statusRow = "D" + str(ws.max_row + 1)
         print(statusRow)
-        infoRow = "C" + str(ws.max_row + 1)
+        infoRow = "E" + str(ws.max_row + 1)
         print(infoRow)
+        ws[timeRow] = str(currentTime)
+        ws[modelRow] = str(model)
         ws[serialRow] = str(serial)
 
         ws[statusRow] = statusLabel
@@ -157,11 +185,11 @@ def writeToWorkbook(serial, status):
         print("Files saved succesfully")
 
     elif searchResult > -1:
-        foundRow = "B"+str(searchResult)
+        foundRow = "C"+str(searchResult)
         print("Found row is "+foundRow)
         if ws[foundRow].value == "FAILED" and status == 1:
-            print("Dentro de if")
-            secondTimeCell = "D" + str(searchResult)
+            print("inside if")
+            secondTimeCell = "E" + str(searchResult)
             ws[secondTimeCell] = "PASSED"
             ws[secondTimeCell].font = Font(color='259e15')
             print("Second test passed")
@@ -172,11 +200,11 @@ def writeToWorkbook(serial, status):
 
 def isSerialFound(serial, ws):
     for row in range(3,ws.max_row+1):
-        currentRow = "A"+str(row)
+        currentRow = "B"+str(row)
         if ws[currentRow].value == str(serial):
-            print("Encontrado")
+            print("Found")
             return row
-    print("No encontrado")
+    print("Not Found")
     return -1
 
 # def getFailed():
@@ -192,8 +220,5 @@ def isSerialFound(serial, ws):
 #         ws = wb.active
 #         return ws["H1"].value
 #     else: return ""
-
-
-
 
 

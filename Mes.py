@@ -11,6 +11,7 @@ firstTimeFlagMes = True
 firstTimeFlagMes2 = True
 driverStatus = 1
 previousScann = ""
+driverModel = ""
 
 def mainWindow():
     root = tk.Tk()
@@ -53,13 +54,13 @@ def mainWindow():
             statusLabel = tk.Label(root, text="PASA")
             statusLabel.config(font=("ARIAL",250), fg="green")
             serialLabel.config(font=("ARIAL", 40), fg="green")
-            ExcelReport.writeToWorkbook(previousScann, True)
+            ExcelReport.writeToWorkbook(driverModel,previousScann, True)
 
         else:
             statusLabel = tk.Label(root, text="NO\nPASA")
             statusLabel.config(font=("ARIAL", 150), fg="red")
             serialLabel.config(font=("ARIAL", 40), fg="red")
-            ExcelReport.writeToWorkbook(previousScann, False)
+            ExcelReport.writeToWorkbook(driverModel, previousScann, False)
 
     def closeProgram():
         alert = pag.confirm( text="¿Seguro que desea salir?", title="Confirmar salida", buttons=["Ok","Cancelar"], icon="shield.ico")
@@ -106,6 +107,7 @@ def mainWindow():
 
 
 def Mes():
+    global driverModel
 
     #KILL TASK
     def killMes():
@@ -141,25 +143,36 @@ def Mes():
     if imageFound(mesNotFoundAlert, 0.5, 0.95):
         global driverStatus
         driverStatus = 3
+        driverModel = "Unknown"
         pyperclip.copy("3")
         print("Serial no encontrado")
         pag.press("enter")
 
     else:
     #GO TO RESULT OF SCANNED S/N
-       global firstTimeFlagMes2
-       if firstTimeFlagMes2 is True:
-        pag.press("tab")
+        global firstTimeFlagMes2
+        if firstTimeFlagMes2 is True:
+            pag.press("tab",5)
+        else:
+            pag.press("tab",4)
+
+        pag.keyDown("ctrlleft")
+        pag.press("c")
+        pag.keyUp("ctrlleft")
+        driverModel = pyperclip.paste()
         pag.hotkey("ctrlleft","tab")
         pag.hotkey("ctrlleft", "tab")
-        pag.hotkey("ctrlleft", "right")
-        pag.hotkey("left")
+        if firstTimeFlagMes2:
+            pag.hotkey("ctrlleft", "right")
+            pag.hotkey("left")
         firstTimeFlagMes2 = False
 
-       # COPY MES RESULT
-       pag.keyDown("ctrlleft")
-       pag.press("c")
-       pag.keyUp("ctrlleft")
+        # COPY MES RESULT
+        pag.keyDown("ctrlleft")
+        pag.press("c")
+        pag.keyUp("ctrlleft")
+        # RETURN TO FIRST ROW
+        pag.hotkey("ctrlleft", "tab")
 
      ## COPY CLIPBOARD TO A VARIABLE
     result = pyperclip.paste()
@@ -171,6 +184,7 @@ def Mes():
         driverStatus = 3
     print(driverStatus)
     pyperclip.copy("")
+    print("Model is "+driverModel+" serial status is "+str(driverStatus))
     mainWindow()
 
 
