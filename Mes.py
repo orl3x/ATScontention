@@ -108,6 +108,7 @@ def mainWindow():
 
 def Mes():
     global driverModel
+    global driverStatus
 
     #KILL TASK
     def killMes():
@@ -140,13 +141,19 @@ def Mes():
     pag.press("enter")
 
     #NOT FOUND WINDOW SHOWS UP THEN DRIVER FAILS
-    if imageFound(mesNotFoundAlert, 0.5, 0.95):
-        global driverStatus
+    if imageFound(mesNotFoundAlert, 0.3, 0.95):
         driverStatus = 3
         driverModel = "Unknown"
         pyperclip.copy("3")
         print("Serial no encontrado")
         pag.press("enter")
+    elif imageFound(mesNotFoundAlert2, 0.3, 0.95):
+            driverStatus = 3
+            driverModel = "Unknown"
+            print("Driver Model:" +driverModel)
+            pyperclip.copy("3")
+            print("Serial no encontrado")
+            pag.press("enter")
 
     else:
     #GO TO RESULT OF SCANNED S/N

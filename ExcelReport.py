@@ -185,11 +185,11 @@ def writeToWorkbook(model, serial, status):
         print("Files saved succesfully")
 
     elif searchResult > -1:
-        foundRow = "C"+str(searchResult)
+        foundRow = "D"+str(searchResult)
         print("Found row is "+foundRow)
         if ws[foundRow].value == "FAILED" and status == 1:
             print("inside if")
-            secondTimeCell = "E" + str(searchResult)
+            secondTimeCell = "F" + str(searchResult)
             ws[secondTimeCell] = "PASSED"
             ws[secondTimeCell].font = Font(color='259e15')
             print("Second test passed")
@@ -200,7 +200,7 @@ def writeToWorkbook(model, serial, status):
 
 def isSerialFound(serial, ws):
     for row in range(3,ws.max_row+1):
-        currentRow = "B"+str(row)
+        currentRow = "C"+str(row)
         if ws[currentRow].value == str(serial):
             print("Found")
             return row
@@ -220,5 +220,4 @@ def isSerialFound(serial, ws):
 #         ws = wb.active
 #         return ws["H1"].value
 #     else: return ""
-
 

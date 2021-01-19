@@ -6,6 +6,7 @@ def img(name):
 
 mesLoginBtn = img("mesLoginBtn.PNG")
 mesNotFoundAlert = img("mesNotFoundAlert.PNG")
+mesNotFoundAlert2 = img("mesNotFoundAlert2.PNG")
 mesSideBtn = img("mesSideBtn.PNG")
 mesTextBox = img("mesTextBox.PNG")
 mesProcessScanSearch = img("mesProcessScanSearch.PNG")
