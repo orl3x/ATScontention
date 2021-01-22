@@ -207,17 +207,3 @@ def isSerialFound(serial, ws):
     print("Not Found")
     return -1
 
-# def getFailed():
-#     if isFileExisting():
-#         wb = xl.load_workbook(str(path+name), data_only=True)
-#         ws = wb.active
-#         return ws["H2"].value
-#     else: return ""
-#
-# def getPassed():
-#     if isFileExisting():
-#         wb = xl.load_workbook(str(path+name), read_only=True)
-#         ws = wb.active
-#         return ws["H1"].value
-#     else: return ""
-

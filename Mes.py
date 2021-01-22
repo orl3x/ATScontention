@@ -141,19 +141,19 @@ def Mes():
     pag.press("enter")
 
     #NOT FOUND WINDOW SHOWS UP THEN DRIVER FAILS
-    if imageFound(mesNotFoundAlert, 0.3, 0.95):
+    if imageFound(mesNotFoundAlert, 0.7, 0.93) or imageFound(mesNotFoundAlert2, 0.7, 0.93):
         driverStatus = 3
         driverModel = "Unknown"
         pyperclip.copy("3")
         print("Serial no encontrado")
         pag.press("enter")
-    elif imageFound(mesNotFoundAlert2, 0.3, 0.95):
-            driverStatus = 3
-            driverModel = "Unknown"
-            print("Driver Model:" +driverModel)
-            pyperclip.copy("3")
-            print("Serial no encontrado")
-            pag.press("enter")
+    # elif imageFound(mesNotFoundAlert2, 0.8, 0.93):
+    #         driverStatus = 3
+    #         driverModel = "Unknown"
+    #         print("Driver Model:" +driverModel)
+    #         pyperclip.copy("3")
+    #         print("Serial no encontrado")
+    #         pag.press("enter")
 
     else:
     #GO TO RESULT OF SCANNED S/N
